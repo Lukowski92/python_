@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+   <h1 align='center'>Pacjenci</h1>
+  
+  <table class="table table-striped">
+    <thead>
+      <tr> 
+        <th scope="col">Imię</th>
+        <th scope="col">Nazwisko</th>
+        <th scope="col">Numer telefonu</th>
+        <th scope="col">Notka</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for patient in user.patients %}
+      <tr> 
+        <td>{{ patient.name }}</td>
+        <td>{{ patient.sur_name }}</td>
+        <td>{{ patient.numer }}</td>
+        <td>{{ patient.notka }}</td>
+        <td>
+        
+
+            <a href="{{ url_for ('views.deletePatient', id=patient.id) }}"><button type="button" style="float: right;" class="btn btn-danger" onclick="doThing()">Usuń</button></a>
+            
+            <a href="{{ url_for ('views.editPatient', id=patient.id) }}"><button type="button" style= "float: right;" class="btn btn-primary" >Edycja</button></a>
+          
+            <button type="button" style="float: right;" class="btn btn-success">Wizyty</button></a>
+       </td>
+      </tr>
+      </a>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+<a href="/addPatient"> <button type="button" class="btn btn-success pull-right">Dodaj pacjenta</button> </a>
+
+{% endblock %}
