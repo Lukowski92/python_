@@ -30,5 +30,6 @@ class Patient(db.Model):
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    note = db.Column(db.String(1000))
+    note_at = db.Column(db.String(1000))
+    note_after = db.Column(db.String(1000))
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
