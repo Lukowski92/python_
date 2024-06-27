@@ -1,26 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Wizyty</h1>
-    {% for appointment in appointments %}
-      <tr> 
-        <td>{{ appointment.id}}</td>
-        <td>{{ appointment.date}}</td>
-    {% endfor %}
-    <br/>
-
-    <form method="POST">
-     {{ form.date.label }}
-     {{ form.date }}
-     {{ form.patient_id.label}}
-     {{ form.patient_id}}
-     {{ form.note_at.label }}
-     {{ form.note_at }}
-       
-        <br/>
-        {{ form.submit}}
-
-    </form>
-    
+   
 
 
 {% endblock %}

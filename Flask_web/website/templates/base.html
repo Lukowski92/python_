@@ -33,18 +33,18 @@
       </button>
       <div class="collapse navbar-collapse justify-content-center nav-fill"  id="navbar">
         <div class="navbar-nav">
-          {% if user.is_authenticated %}
-         
-          <b><a class="nav-item nav-link" id="patient" href="/appointment"><button class="btn btn-outline-success me-2" type="button">Wizyty</button></a></b>
-          <b><a class="nav-item nav-link" id="patient" href="/calendar"><button class="btn btn-outline-success me-2" type="button">Kalendarz</button></a></b>
+           {% if user.is_authenticated %} 
+          <b><a class="nav-item nav-link" id="home" href="/"><button class="btn btn-outline-success me-2" type="button">Home</button></a></b>
+          <b><a class="nav-item nav-link" id="appointment" href="/appointment"><button class="btn btn-outline-success me-2" type="button">Wizyty</button></a></b>
+          <b><a class="nav-item nav-link" id="calendar" href="/calendar"><button class="btn btn-outline-success me-2" type="button">Kalendarz</button></a></b>
           <b><a class="nav-item nav-link" id="patient" href="/patient"><button class="btn btn-outline-success me-2" type="button">Pacjenci</button></a></b>
           <b><a class="nav-item nav-link" id="logout" href="/logout"><button class="btn btn-outline-success me-2" type="button">Wyloguj</button></a></b>
 
-          {% else %}
+          {% else %} 
           <b><a class="nav-item nav-link" id="home" href="/"><button class="btn btn-outline-success me-2" type="button">Home</button></a></b>
           <a class="nav-item nav-link" id="login" href="/login"><button class="btn btn-outline-success me-2" type="button">Zaloguj</button></a></b>
           <a class="nav-item nav-link" id="signUp" href="/sign-up"><button class="btn btn-outline-success me-2" type="button">Rejestracja</button></a></b>
-          {% endif %}
+          {% endif %} 
         </div>
       </div>
     </nav>

@@ -14,7 +14,6 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
-
 def home():
    
     if request.method == 'POST': 
@@ -43,9 +42,8 @@ def delete_note():
 
     return jsonify({})
 
-
+# todo kalendarz z wizytami all
 @views.route('/calendar')
-
 def calendar():
    
     return render_template('calendar.html',user=current_user)
@@ -54,7 +52,6 @@ def calendar():
 def patient():
     patients = Patient.query.all()
     return render_template('patient.html', patients=patients,user=current_user)
-
 
 
 @views.route('/addPatient', methods=['GET','POST'])
@@ -115,11 +112,11 @@ def chosePatient():
 
 @views.route('/appointment', methods=['GET','POST'])
 def appointment():
-    
+    appointments = Appointment.query.all()
     form = AppointmentForm()
     form.patient_id.query=Patient.query.all()
 
-    return render_template('appointment.html',user=current_user,form=form )
+    return render_template('appointment.html',user=current_user,form=form)
 
 
 

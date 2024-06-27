@@ -5,8 +5,10 @@ from sqlalchemy.sql import func
 from wtforms import DateField, DateTimeField, IntegerField, StringField, SubmitField
 from flask_wtf import FlaskForm
 from wtforms_alchemy import QuerySelectField
+from wtforms.validators import DataRequired
 
 
+# todo zmienić na kartępacjenta pacjent i jego wszyskite wizyty i notataki ?
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
@@ -33,15 +35,12 @@ class Patient(db.Model):
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+    note_at_regis = db.Column(db.String(1000))
     note_at = db.Column(db.String(1000))
     note_after = db.Column(db.String(1000))
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
     
-
-class AppointmentForm(FlaskForm):
-    date = DateTimeField('Data')
-    note_at_regis = StringField('Notatka z rejestracji wizyty')
-    note_at = StringField('Notatka z rejestracji wizyty')
-    note_after = StringField('Notatka po zabiegu')
-    patient_id=QuerySelectField('Pacjent')
     
+
+
+
