@@ -2,6 +2,9 @@ import datetime
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from wtforms import DateField, DateTimeField, IntegerField, StringField, SubmitField
+from flask_wtf import FlaskForm
+from wtforms_alchemy import QuerySelectField
 
 
 class Note(db.Model):
@@ -33,3 +36,12 @@ class Appointment(db.Model):
     note_at = db.Column(db.String(1000))
     note_after = db.Column(db.String(1000))
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    
+
+class AppointmentForm(FlaskForm):
+    date = DateTimeField('Data')
+    note_at_regis = StringField('Notatka z rejestracji wizyty')
+    note_at = StringField('Notatka z rejestracji wizyty')
+    note_after = StringField('Notatka po zabiegu')
+    patient_id=QuerySelectField('Pacjent')
+    

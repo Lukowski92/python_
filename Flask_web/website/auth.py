@@ -11,8 +11,8 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-
- 
+    
+    
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -60,6 +60,7 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
         else:
+            
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(
                 password1, method='pbkdf2:sha256'))
             db.session.add(new_user)
@@ -71,9 +72,4 @@ def sign_up():
     return render_template("sign_up.html", user=current_user)
 
 
-@auth.before_request
-def before_request():
-    session.permanent = True
-    auth.permanent_session_lifetime = timedelta(minutes=1)
-    session.modified = True
-    g.user = current_user
+

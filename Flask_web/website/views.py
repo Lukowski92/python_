@@ -2,9 +2,11 @@ from calendar import Calendar
 from datetime import date
 from flask import Blueprint, abort, redirect, render_template, request, flash, jsonify, url_for
 from flask_login import login_required, current_user
-from wtforms import IntegerField, StringField
-from .models import Note,User,Patient,Appointment
+from wtforms import DateTimeField, IntegerField, SelectField, StringField, SubmitField
+from .models import AppointmentForm, Note,User,Patient,Appointment
 from flask_wtf import FlaskForm
+from wtforms_alchemy import QuerySelectField
+
 from . import db
 import json
 
@@ -14,6 +16,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 
 def home():
+   
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML 
 
@@ -70,13 +73,6 @@ def addpatient():
         return redirect('/patient')
     return render_template('addPatient.html', user=current_user)
 
-
-@views.route('/appointment', methods=['GET','POST'])
-def appointment():
-
-    return render_template('appointment.html',user=current_user )
-
-
 @views.route('/deletePatient/<int:id>')
 def deletePatient(id):
     patient_to_delete= Patient.query.get_or_404(id)
@@ -110,6 +106,20 @@ def editPatient(id):
         flash('Edycja zapisana')
         return redirect('/patient')
     return render_template('updatePatient.html', user=current_user, form=form, patient_to_edit=patient_to_edit)
+
+
+
+def chosePatient():      
+    return db.session.query(patient).all()
+
+
+@views.route('/appointment', methods=['GET','POST'])
+def appointment():
+    
+    form = AppointmentForm()
+    form.patient_id.query=Patient.query.all()
+
+    return render_template('appointment.html',user=current_user,form=form )
 
 
 
