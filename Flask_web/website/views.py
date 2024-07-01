@@ -1,9 +1,9 @@
 from calendar import Calendar
-from datetime import date
+from datetime import datetime
 from flask import Blueprint, abort, redirect, render_template, request, flash, jsonify, url_for
 from flask_login import login_required, current_user
 from wtforms import DateTimeField, IntegerField, SelectField, StringField, SubmitField
-from .models import AppointmentForm, Note,User,Patient,Appointment
+from .models import  Note,User,Patient,Appointment
 from flask_wtf import FlaskForm
 from wtforms_alchemy import QuerySelectField
 
@@ -112,11 +112,26 @@ def chosePatient():
 
 @views.route('/appointment', methods=['GET','POST'])
 def appointment():
+    patients = Patient.query.all()
     appointments = Appointment.query.all()
-    form = AppointmentForm()
-    form.patient_id.query=Patient.query.all()
 
-    return render_template('appointment.html',user=current_user,form=form)
+    if request.method == 'POST':
+        date_str = request.form.get('date')
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')  # Convert string to datetime
+        except ValueError:
+            flash('Invalid date format!', category='error')
+            return render_template('appointment.html', user=current_user, appointments=appointments, patients=patients)
+        
+        note_at_regis = request.form.get('note_at_regis')
+        patient_id = request.form.get('patient_id')
+        new_appointment = Appointment(date=date, note_at_regis=note_at_regis, patient_id=patient_id)
+        db.session.add(new_appointment)
+        db.session.commit()
+        flash('Wizyta dodana!', category='success')
+
+    return render_template('appointment.html', user=current_user, appointments=appointments, patients=patients)
+
 
 
 

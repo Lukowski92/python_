@@ -13,3 +13,4 @@ function doThing(event) {
       window.location.href = '/deletePatient' :
       null;
   };
+

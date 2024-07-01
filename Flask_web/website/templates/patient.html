@@ -14,13 +14,12 @@
     <tbody>
       {% for patient in user.patients %}
       <tr> 
+        <td>{{ patient.id }}</td>
         <td>{{ patient.name }}</td>
         <td>{{ patient.sur_name }}</td>
         <td>{{ patient.numer }}</td>
         <td>{{ patient.notka }}</td>
         <td>
-        
-
             <a href="{{ url_for ('views.deletePatient', id=patient.id) }}"><button type="button" style="float: right;" class="btn btn-danger" onclick="doThing()">Usuń</button></a>
             
             <a href="{{ url_for ('views.editPatient', id=patient.id) }}"><button type="button" style= "float: right;" class="btn btn-primary" >Edycja</button></a>
