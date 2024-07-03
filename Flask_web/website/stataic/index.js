@@ -14,3 +14,16 @@ function doThing(event) {
       null;
   };
 
+
+  function selectPatient(event) {
+    const patientIdInput = document.getElementById('patient_id');
+    const selectedPatient = Array.from(document.querySelectorAll('#patientList option')).find(
+        option => option.value === event.target.value.trim()
+    );
+
+    if (selectedPatient) {
+        patientIdInput.value = selectedPatient.dataset.id;
+    } else {
+        patientIdInput.value = '';
+    }
+}

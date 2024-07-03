@@ -1,81 +1,96 @@
 {% extends "base.html" %}
 {% block content %}
 
-<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+<!-- Dlaczego script musi byc tu a nie moze byc w oddzielnym pliku -->
+<script>
+  function selectPatient(event) {
+    const patientIdInput = document.getElementById('patient_id');
+    const selectedPatient = Array.from(document.querySelectorAll('#patientList option')).find(
+      option => option.value === event.target.value.trim()
+    );
+
+    if (selectedPatient) {
+      patientIdInput.value = selectedPatient.dataset.id;
+    } else {
+      patientIdInput.value = '';
+    }
+  }
+</script>
+
+
+<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+  aria-expanded="false" aria-controls="collapseExample">
   Dodaj wizytę
 </button>
 </p>
 <div class="collapse" id="collapseExample">
-<div class="card card-body">
-  
+  <div class="card card-body">
+
     <form method="POST">
       <h3 align="center">Dodaj wizyte</h3>
-      <div class="form-group"></div>
-
       <div class="form-group">
         <label for="date">Data</label>
-        <input
-          type="datetime-local"
-          class="form-control"
-          id="date"
-          name="date"
-          placeholder="Podaj datę wizyty"
-        />
-        
+        <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Podaj datę wizyty" />
       </div>
       <div class="form-group">
-        <label for="patient_id">Patient</label>
-        <select class="form-control" id="patient_id" name="patient_id">
-            {% for patient in patients %}
-            <option value="{{ patient.id }}">{{ patient.name }} {{ patient.sur_name }} {{ patient.number }}</option>
-            {% endfor %}
-        </select>
-    
-    </div>
+        <label for="patientFilter">Pacjent</label>
+        <input list="patientList" class="form-control" id="patientFilter" name="patientFilter"
+          placeholder="Filter patients by name" oninput="selectPatient(event)" />
+        <input type="hidden" id="patient_id" name="patient_id" />
+        <datalist id="patientList">
+          {% for patient in patients %}
+          <option value="{{ patient.name }} {{ patient.sur_name }} {{ patient.numer }}" data-id="{{ patient.id }}">
+          </option>
+          {% endfor %}
+        </datalist>
+      </div>
       <div class="form-group">
         <label for="note_at_regis" class="form-label">notatka podczas rejstacji</label>
-        <textarea class="form-control" 
-                  id="note_at_regis" 
-                  name="note_at_regis" 
-                  rows="3"></textarea>
+        <textarea class="form-control" id="note_at_regis" name="note_at_regis" rows="3"></textarea>
       </div>
       <br />
       <button type="submit" class="btn btn-primary">Dodaj</button>
     </form>
-  
-</div>
+  </div>
 </div>
 
-     <h3 align="center">Wszystkie Wizyty</h3>
-     <div class="table-responsive">
-    <table class="table table-success table-striped table-hover">
-      <thead>
-        <tr>
-            <th>ID</th>
-            <th>Data</th>
-            <th>Note at Registration</th>
-            <th>Note at</th>
-            <th>Note after</th>
-            <th>Patient Name</th>
-            <th>Patient Surname</th>
-            <th>Patient ID</th>
-        </tr>
+<h3 align="center">Wszystkie Wizyty</h3>
+<div class="table-responsive">
+  <table class="table table-success table-striped table-hover">
+    <thead>
+      <tr>
+
+        <th>Data</th>
+        <th>Notatka z rejestracji</th>
+        <th>Opis wizyty</th>
+        <th>Odczucia po wizycie</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th style="text-align:center">Opcje</th>
+
+      </tr>
     </thead>
     <tbody>
-        {% for appointment in appointments %}
-            <tr>
-                <td>{{ appointment.id }}</td>
-                <td>{{ appointment.date }}</td>
-                <td>{{ appointment.note_at_regis }}</td>
-                <td>{{ appointment.note_at }}</td>
-                <td>{{ appointment.note_after }}</td>
-                <td>{{ appointment.patient.name }}</td>
-                <td>{{ appointment.patient.sur_name }}</td>
-                <td>{{ appointment.patient_id }}</td>
-            </tr>
-        {% endfor %}
+      {% for appointment in appointments %}
+      <tr>
+
+        <td>{{ appointment.date }}</td>
+        <td>{{ appointment.note_at_regis }}</td>
+        <td>{{ appointment.note_at }}</td>
+        <td>{{ appointment.note_after }}</td>
+        <td>{{ appointment.patient.name }}</td>
+        <td>{{ appointment.patient.sur_name }}</td>
+
+        <td>
+          <a href="{{ url_for ('views.deleteAppointment', id=appointment.id) }}"><button type="button"
+              style="float: right;" class="btn btn-danger">Usuń</button></a>
+          <!-- todo przycisk do edycji wizyty -->
+          <button type="button" style="float: right;" class="btn btn-primary">Edycja</button>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-    </table>
-  </div>
+  </table>
+</div>
 
 {% endblock %}
